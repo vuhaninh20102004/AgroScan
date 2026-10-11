@@ -1,0 +1,198 @@
+/* Reset cơ bản */
+QWidget {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* ====================================================
+   MAIN LAYOUT & SIDEBAR
+   ==================================================== */
+
+QMainWindow {
+    background-color: #0F172A; /* Nền tối xanh đen (Slate 900) */
+}
+
+/* Sidebar */
+#Sidebar {
+    background-color: #0B1121; /* Tối hơn content một chút (Slate 950) */
+    border-right: 1px solid #1E293B;
+}
+
+#Brand {
+    font-size: 30px;
+    font-weight: 900;
+    color: #F8FAFC;
+    letter-spacing: -1px;
+}
+
+#BrandSubtitle {
+    font-size: 11px;
+    font-weight: bold;
+    color: #38BDF8; /* Sky 400 */
+    letter-spacing: 1.5px;
+}
+
+/* Navigation List */
+#Navigation {
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+#Navigation::item {
+    height: 46px;
+    border-radius: 8px;
+    color: #94A3B8;
+    font-size: 15px;
+    font-weight: 500;
+    padding-left: 16px;
+    margin-bottom: 6px;
+}
+
+#Navigation::item:hover {
+    background-color: #1E293B;
+    color: #F1F5F9;
+}
+
+#Navigation::item:selected {
+    background-color: #38BDF8; /* Accent color */
+    color: #0B1121;
+    font-weight: bold;
+}
+
+/* Footer Badge */
+#DemoBadge {
+    background-color: #1E293B;
+    color: #94A3B8;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 10px 16px;
+    border-radius: 6px;
+    letter-spacing: 1.2px;
+}
+
+/* ====================================================
+   HEADER & CONTENT
+   ==================================================== */
+
+#Content {
+    background-color: #0F172A;
+}
+
+#Header {
+    background-color: #0F172A;
+    border-bottom: 1px solid #1E293B;
+}
+
+#Breadcrumb {
+    font-size: 14px;
+    font-weight: 500;
+    color: #64748B;
+}
+
+#UserLabel {
+    font-size: 13px;
+    font-weight: bold;
+    color: #F8FAFC;
+    background-color: #1E293B;
+    padding: 8px 20px;
+    border-radius: 16px;
+}
+
+/* ====================================================
+   DASHBOARD PAGE
+   ==================================================== */
+
+#DashboardPage {
+    background-color: #0F172A;
+}
+
+#PageTitle {
+    font-size: 42px;
+    font-weight: bold;
+    color: #F8FAFC; 
+    letter-spacing: -0.5px;
+}
+
+#PageSubtitle {
+    font-size: 16px;
+    color: #94A3B8; 
+}
+
+/* Thẻ thống kê (Card) */
+#StatCard {
+    background-color: #1E293B; 
+    border-radius: 16px;
+    border: 1px solid #334155; 
+}
+
+#StatCard:hover {
+    background-color: #273449; 
+    border: 1px solid #475569;
+}
+
+#CardTitle {
+    font-size: 13px;
+    font-weight: bold;
+    color: #94A3B8;
+    letter-spacing: 1.2px;
+}
+
+#CardValue {
+    font-size: 48px;
+    font-weight: 800;
+    color: #38BDF8; 
+}
+
+#CardNote {
+    font-size: 14px;
+    font-weight: 500;
+    color: #94A3B8;
+}
+
+/* ====================================================
+   LOADING SCREEN
+   ==================================================== */
+
+#LoadingContainer {
+    background-color: #0F172A;
+}
+
+#LoadingCard {
+    background-color: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 20px;
+}
+
+#LoadingTitle {
+    font-size: 22px;
+    font-weight: 700;
+    color: #F8FAFC;
+    letter-spacing: -0.3px;
+}
+
+#LoadingStatus {
+    font-size: 13px;
+    font-weight: 500;
+    color: #38BDF8;
+}
+
+#LoadingProgressBar {
+    background-color: #0F172A;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    text-align: center;
+    color: transparent;
+    height: 8px;
+}
+
+#LoadingProgressBar::chunk {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #0284C7, stop:1 #38BDF8);
+    border-radius: 3px;
+}
+
+#LoadingSubtitle {
+    font-size: 13px;
+    font-weight: 500;
+    color: #94A3B8;
+}
+
