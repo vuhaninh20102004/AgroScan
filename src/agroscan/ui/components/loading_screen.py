@@ -152,31 +152,39 @@ class LoadingScreen(QWidget):
         page_name: str,
         on_complete: Callable[[], None],
         estimated_ms: int = 2000,
-        min_cooldown_ms: int = 2000,
+        transition_ms: int = 300,
     ):
         """
-        Bắt đầu chu trình loading chuyển trang.
-        - estimated_ms: Thời gian ước tính thực tế của trang/tác vụ.
-        - min_cooldown_ms: Thời gian chờ tối thiểu (mặc định ít nhất 2000ms = 2s để tránh lỗi).
+        Bắt đầu chu trình loading chuyển trang nhanh gọn.
+        - estimated_ms: Thời gian ước tính thực tế của module (hiển thị trên nhãn Estimated).
+        - transition_ms: Thời gian chuyển cảnh loading nhanh (mặc định 300ms, không còn ép cd 2s).
         """
-        # Đảm bảo cd tối thiểu luôn luôn ít nhất 2s
-        actual_duration = max(min_cooldown_ms, estimated_ms, 2000)
-
-        self._duration_ms = actual_duration
+        self._duration_ms = max(50, transition_ms)
         self._elapsed_ms = 0
         self._on_complete_callback = on_complete
 
         self.title_label.setText(f"Loading {page_name}...")
         self.status_label.setText("Initializing...")
 
-        actual_sec = actual_duration / 1000.0
-        self.countdown_label.setText(f"Estimated: {actual_sec:.1f}s")
+        # Giữ nguyên nhãn estimate thực tế của module theo yêu cầu
+        est_sec = estimated_ms / 1000.0
+        self.countdown_label.setText(f"Estimated: {est_sec:.1f}s")
 
         self.progress_bar.setValue(0)
         self.percent_label.setText("0%")
 
         self.spinner.start()
         self._timer.start()
+
+    def complete(self):
+        """Hoàn tất ngay lập tức khi tác vụ thực tế hoàn thành (không bị nghẽn cd)."""
+        self._elapsed_ms = self._duration_ms
+        self._timer.stop()
+        self.spinner.stop()
+        self.progress_bar.setValue(100)
+        self.percent_label.setText("100%")
+        self.status_label.setText("Ready!")
+        self._trigger_completion_flash()
 
     def _on_tick(self):
         self._elapsed_ms += self._timer.interval()
@@ -185,39 +193,25 @@ class LoadingScreen(QWidget):
         self.progress_bar.setValue(progress)
         self.percent_label.setText(f"{progress}%")
 
-        remaining_sec = max(0.0, (self._duration_ms - self._elapsed_ms) / 1000)
-        self.countdown_label.setText(f"Estimated: {remaining_sec:.1f}s")
-
-        # Cập nhật thông điệp theo tiến độ để người dùng cảm thấy hệ thống đang làm việc thực sự
-        if progress < 20:
+        if progress < 30:
             self.status_label.setText("Initializing...")
-        elif progress < 60:
+        elif progress < 80:
             self.status_label.setText("Working...")
-        elif progress < 90:
-            self.status_label.setText("Almost Done...")
         else:
-            self.status_label.setText("Done!")
-
-        if self._elapsed_ms >= self._duration_ms:
-            self._timer.stop()
-            self.spinner.stop()
-            self.progress_bar.setValue(100)
-            self.percent_label.setText("100%")
-            self.countdown_label.setText("Estimated: 0.0s")
             self.status_label.setText("Ready!")
 
-            # Kích hoạt hiệu ứng flash phát sáng nhẹ trên thẻ Card
-            self._trigger_completion_flash()
+        if self._elapsed_ms >= self._duration_ms:
+            self.complete()
 
     def _trigger_completion_flash(self):
-        """Lóe sáng hào quang xanh Sky (#38BDF8) báo hiệu hoàn thành."""
+        """Lóe sáng hào quang nhẹ màu Sky (#38BDF8) báo hiệu chuyển trang thành công."""
         shadow = self.card.graphicsEffect()
         if isinstance(shadow, QGraphicsDropShadowEffect):
-            shadow.setColor(QColor(56, 189, 248, 190))
-            shadow.setBlurRadius(56)
+            shadow.setColor(QColor(56, 189, 248, 200))
+            shadow.setBlurRadius(54)
 
-        # Sau 160ms flash, hoàn tất và chuyển trang
-        QTimer.singleShot(160, self._finalize_completion)
+        # Nhịp flash nhanh gọn 100ms rồi chuyển cảnh mượt
+        QTimer.singleShot(100, self._finalize_completion)
 
     def _finalize_completion(self):
         # Trả lại màu bóng đổ tối ban đầu

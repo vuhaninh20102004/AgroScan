@@ -236,12 +236,12 @@ class MainWindow(QMainWindow):
 
         est_ms = heavy_pages.get(page_name, 2000)
 
-        # Bắt đầu đếm lùi và hiệu ứng loading cho trang MỚI
+        # Chuyển trang nhanh gọn với hiệu ứng flash nhẹ (bỏ cd 2s, estimate thực tế giữ nguyên)
         self.loading_screen.start(
             page_name=page_name,
             on_complete=lambda: self._finish_loading(index, page_name),
             estimated_ms=est_ms,
-            min_cooldown_ms=2000,
+            transition_ms=280,
         )
 
     def _finish_loading(self, target_index: int, page_name: str):
